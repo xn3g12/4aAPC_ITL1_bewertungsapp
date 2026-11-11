@@ -1,0 +1,26 @@
+$kind: http-request
+name: "Negativtest: Projekt mit unbekanntem Team"
+url: "{{baseUrl}}/projects"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "teamId": 999999999,
+      "titel": "Ungueltiges Projekt",
+      "beschreibung": "Team existiert nicht",
+      "praesentiertAm": "2026-11-11"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Unbekannte Team-ID wird mit 400 abgelehnt', function () {
+        pm.response.to.have.status(400);
+      });
+      pm.test('Antwort enthaelt eine Fehlermeldung', function () {
+        pm.expect(pm.response.json()).to.have.property('error');
+      });
+    language: text/javascript
+order: 5000

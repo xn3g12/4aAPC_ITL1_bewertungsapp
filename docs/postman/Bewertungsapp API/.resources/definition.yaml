@@ -1,0 +1,2 @@
+$kind: collection
+description: Tests fuer Team- und Projekt-CRUD, Bewertungen, Auswertung und Fehlerfaelle. Vor dem Lauf das Environment 'Bewertungsapp lokal' auswaehlen und gueltige criterionId/jurorId-Werte setzen.

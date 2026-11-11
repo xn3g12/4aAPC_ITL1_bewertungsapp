@@ -1,0 +1,27 @@
+$kind: http-request
+url: "{{baseUrl}}/teams"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Postman Testteam",
+      "klasse": "4aAPC"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status ist 201 Created', function () {
+        pm.response.to.have.status(201);
+      });
+      pm.test('Antwort enthaelt Team-ID und Pflichtdaten', function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property('id');
+        pm.expect(json.name).to.eql('Postman Testteam');
+        pm.expect(json.klasse).to.eql('4aAPC');
+        pm.environment.set('teamId', json.id);
+      });
+    language: text/javascript
+order: 1000

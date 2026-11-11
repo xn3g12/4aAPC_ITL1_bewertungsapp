@@ -1,0 +1,27 @@
+$kind: http-request
+name: "Negativtest: Bewertung doppelt einreichen"
+url: "{{baseUrl}}/evaluations"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "projectId": "{{projectId}}",
+      "criterionId": "{{criterionId}}",
+      "jurorId": "{{jurorId}}",
+      "score": 8,
+      "comment": "Doppelter Eintrag muss abgelehnt werden"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Doppelte Bewertung wird mit 409 abgelehnt', function () {
+        pm.response.to.have.status(409);
+      });
+      pm.test('Antwort enthaelt eine Fehlermeldung', function () {
+        pm.expect(pm.response.json()).to.have.property('error');
+      });
+    language: text/javascript
+order: 2000

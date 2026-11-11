@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/teams/{{teamId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Postman Testteam aktualisiert"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status ist 200 OK', function () {
+        pm.response.to.have.status(200);
+      });
+      pm.test('Teamname wurde aktualisiert', function () {
+        pm.expect(pm.response.json().name).to.eql('Postman Testteam aktualisiert');
+      });
+    language: text/javascript
+order: 4000

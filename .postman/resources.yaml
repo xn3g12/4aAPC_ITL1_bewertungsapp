@@ -1,0 +1,10 @@
+# Use this workspace to collaborate
+workspace:
+  id: 3a74808f-7a18-4dde-8f28-02100b520d07
+
+localResources:
+  collections:
+    - ../docs/postman/bewertungsapp.postman_collection.json
+    - ../docs/postman/Bewertungsapp API
+  environments:
+    - ../docs/postman/Bewertungsapp lokal.environment.yaml

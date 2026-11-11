@@ -1,0 +1,23 @@
+$kind: http-request
+name: "Negativtest: Team ohne Pflichtfeld"
+url: "{{baseUrl}}/teams"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "klasse": "4aAPC"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Fehlendes Pflichtfeld wird mit 400 abgelehnt', function () {
+        pm.response.to.have.status(400);
+      });
+      pm.test('Antwort enthaelt eine Fehlermeldung', function () {
+        pm.expect(pm.response.json()).to.have.property('error');
+      });
+    language: text/javascript
+order: 5000

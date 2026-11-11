@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/projects/{{projectId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "titel": "Postman Testprojekt aktualisiert"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status ist 200 OK', function () {
+        pm.response.to.have.status(200);
+      });
+      pm.test('Projekttitel wurde aktualisiert', function () {
+        pm.expect(pm.response.json().titel).to.eql('Postman Testprojekt aktualisiert');
+      });
+    language: text/javascript
+order: 4000

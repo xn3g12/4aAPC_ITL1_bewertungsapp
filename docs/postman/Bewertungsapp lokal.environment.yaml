@@ -1,0 +1,14 @@
+name: Bewertungsapp lokal
+values:
+  - key: baseUrl
+    value: 'http://localhost:3000'
+  - key: teamId
+    value: ''
+  - key: projectId
+    value: ''
+  - key: evaluationId
+    value: ''
+  - key: criterionId
+    value: '1'
+  - key: jurorId
+    value: '1'

@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{baseUrl}}/projects"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "teamId": "{{teamId}}",
+      "titel": "Postman Testprojekt",
+      "beschreibung": "Projekt fuer den automatisierten API-Test",
+      "praesentiertAm": "2026-11-11"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Status ist 201 Created', function () {
+        pm.response.to.have.status(201);
+      });
+      pm.test('Antwort enthaelt Projekt-ID und Titel', function () {
+        const json = pm.response.json();
+        pm.expect(json).to.have.property('id');
+        pm.expect(json.titel).to.eql('Postman Testprojekt');
+        pm.environment.set('projectId', json.id);
+      });
+    language: text/javascript
+order: 1000
