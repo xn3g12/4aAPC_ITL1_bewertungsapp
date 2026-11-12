@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" text="Zurück"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Projekt</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main class="page-shell">
+    @if (loading) {
+      <div class="state-message" role="status">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Projektdetails werden geladen …</p>
+      </div>
+    } @else if (errorMessage) {
+      <div class="state-message" role="alert">
+        <ion-text color="danger"><p>{{ errorMessage }}</p></ion-text>
+        <ion-item button detail="true" routerLink="/home">
+          <ion-label>Zur Projektübersicht</ion-label>
+        </ion-item>
+      </div>
+    } @else if (project) {
+      <section class="project-intro">
+        <p class="eyebrow">{{ project.Team?.name || 'Team nicht zugeordnet' }}{{ project.Team?.klasse ? ' · ' + project.Team?.klasse : '' }}</p>
+        <h1>{{ project.titel }}</h1>
+        <p class="description">{{ project.beschreibung }}</p>
+        <p class="presentation-date">
+          Präsentiert am <strong>{{ project.praesentiertAm | date: 'dd.MM.yyyy' }}</strong>
+        </p>
+      </section>
+
+      <section class="ratings-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">RÜCKMELDUNGEN</p>
+            <h2>Bisherige Bewertungen</h2>
+          </div>
+          <ion-note>{{ project.Evaluations?.length ?? 0 }} gesamt</ion-note>
+        </div>
+
+        @if (!project.Evaluations?.length) {
+          <ion-card>
+            <ion-card-content class="empty-ratings">
+              Für dieses Projekt gibt es noch keine Bewertungen.
+            </ion-card-content>
+          </ion-card>
+        } @else {
+          <ion-list class="rating-list">
+            @for (evaluation of project.Evaluations ?? []; track evaluation.id) {
+              <ion-card>
+                <ion-card-header>
+                  <div class="rating-heading">
+                    <ion-card-title>{{ evaluation.Criterion?.name || 'Kriterium ' + evaluation.criterionId }}</ion-card-title>
+                    <span class="score">{{ evaluation.score }}<small>/{{ evaluation.Criterion?.maxScore ?? '—' }}</small></span>
+                  </div>
+                  <ion-note>Juror #{{ evaluation.jurorId }}</ion-note>
+                </ion-card-header>
+                <ion-card-content>
+                  {{ evaluation.comment || 'Kein Kommentar hinterlegt.' }}
+                </ion-card-content>
+              </ion-card>
+            }
+          </ion-list>
+        }
+      </section>
+    }
+  </main>
+</ion-content>

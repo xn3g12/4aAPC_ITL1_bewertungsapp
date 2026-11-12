@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { Project, Team, Evaluation } = require('../models');
+const { Project, Team, Evaluation, Criterion } = require('../models');
 
 // GET /projects – Alle Projekte abrufen
 router.get('/', async (req, res) => {
@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const projects = await Project.findAll({
       include: [
         { model: Team },
-        { model: Evaluation }
+        { model: Evaluation, include: [{ model: Criterion }] }
       ]
     });
 
@@ -26,7 +26,7 @@ router.get('/:id', async (req, res) => {
     const project = await Project.findByPk(req.params.id, {
       include: [
         { model: Team },
-        { model: Evaluation }
+        { model: Evaluation, include: [{ model: Criterion }] }
       ]
     });
 

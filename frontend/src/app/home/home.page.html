@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bewertungsapp</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <main class="page-shell">
+    <section class="intro">
+      <p class="eyebrow">PROJEKTÜBERSICHT</p>
+      <h1>Projekte entdecken</h1>
+      <p class="intro-copy">Alle Präsentationen und die zugehörigen Bewertungsteams auf einen Blick.</p>
+    </section>
+
+    <ion-searchbar
+      aria-label="Projekte suchen"
+      placeholder="Projekt oder Team suchen"
+      [value]="searchTerm"
+      (ionInput)="onSearchChange($event)"
+    ></ion-searchbar>
+
+    @if (loading) {
+      <div class="state-message" role="status">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Projekte werden geladen …</p>
+      </div>
+    } @else if (errorMessage) {
+      <div class="state-message error-state" role="alert">
+        <ion-text color="danger"><p>{{ errorMessage }}</p></ion-text>
+        <ion-item button detail="true" (click)="loadProjects()">
+          <ion-label>Erneut versuchen</ion-label>
+        </ion-item>
+      </div>
+    } @else if (filteredProjects.length === 0) {
+      <div class="state-message">
+        <h2>{{ searchTerm ? 'Keine passenden Projekte' : 'Noch keine Projekte vorhanden' }}</h2>
+        <p>{{ searchTerm ? 'Passe deinen Suchbegriff an.' : 'Sobald Projekte im Backend angelegt sind, erscheinen sie hier.' }}</p>
+      </div>
+    } @else {
+      <div class="section-heading">
+        <h2>Aktuelle Projekte</h2>
+        <ion-badge color="primary">{{ filteredProjects.length }}</ion-badge>
+      </div>
+
+      <ion-list class="project-list">
+        @for (project of filteredProjects; track project.id) {
+          <ion-card button [routerLink]="['/projects', project.id]">
+            <ion-card-content>
+              <div class="project-heading">
+                <div>
+                  <p class="project-team">{{ project.Team?.name || 'Team nicht zugeordnet' }}</p>
+                  <h3>{{ project.titel }}</h3>
+                </div>
+                @if (project.Team?.klasse) {
+                  <ion-badge color="light">{{ project.Team?.klasse }}</ion-badge>
+                }
+              </div>
+              <p class="project-description">{{ project.beschreibung }}</p>
+              <div class="project-meta">
+                <span>Präsentation</span>
+                <strong>{{ project.praesentiertAm | date: 'dd.MM.yyyy' }}</strong>
+                <span class="evaluation-count">{{ project.Evaluations?.length ?? 0 }} Bewertungen</span>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        }
+      </ion-list>
+    }
+  </main>
+</ion-content>

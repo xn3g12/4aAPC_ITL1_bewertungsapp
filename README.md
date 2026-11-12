@@ -17,12 +17,16 @@ npx sequelize-cli db:seed:all
 npm start
 ```
 
-Frontend:
+Frontend (in a second terminal, while the backend is running):
 ```
 cd frontend
 npm install
-ionic serve
+npm start
 ```
+
+The Ionic app opens at `http://localhost:8100` and requests projects from
+`http://localhost:3000`. Set the backend URL in
+`frontend/src/environments/environment.ts` when it runs on another host or port.
 
 Eigene `config/config.json` lokal aus `config/config.example.json` ableiten, nicht committen.
 
@@ -63,9 +67,9 @@ Danach habe ich die Migrationen ausgeführt, Beispieldaten in die Tabellen einge
 
 ## Einheit 6: IONIC-Frontend
 
-- [ ] Projektliste mit Team-Zuordnung
-- [ ] Detailansicht eines Projekts mit bisherigen Bewertungen
-- [ ] API-Service vollständig an eigenes Backend angebunden
+- [x] Projektliste mit Team-Zuordnung
+- [x] Detailansicht eines Projekts mit bisherigen Bewertungen
+- [x] API-Service vollständig an eigenes Backend angebunden
 
 ## Einheit 7: Login und Endabgabe
 
