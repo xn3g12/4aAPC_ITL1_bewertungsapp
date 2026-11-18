@@ -53,7 +53,6 @@ router.post('/', async (req, res) => {
     }
 
     const team = await Team.findByPk(teamId);
-
     if (!team) {
       return res.status(400).json({ error: 'Das angegebene Team existiert nicht.' });
     }
